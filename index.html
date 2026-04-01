@@ -654,6 +654,8 @@ if('serviceWorker' in navigator){
   });
 }
 
+/* FULLSCREEN */
+function toggleFS(){
   if(!S.fsActive){
     var el=document.documentElement;
     if(el.requestFullscreen)el.requestFullscreen();
