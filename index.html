@@ -26,6 +26,11 @@
   --bg:#f0eff8;--card:#e8e7f4;--card-strong:#dddcee;
   --b1:rgba(0,0,0,0.07);--b2:rgba(0,0,0,0.13);
   --tx:#16152e;--tx2:#3b3a5c;--tx3:#7a789a;
+  --btc:#c47000;--grn:#0d9260;--red:#d93636;
+  --clbl-color:#4a4870;
+}
+[data-theme="dark"]{
+  --clbl-color:#d8d8ec;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{font-size:16px;-webkit-text-size-adjust:100%;}
@@ -122,7 +127,7 @@ header{
   display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:center;justify-content:center;
   -webkit-transition:background-color .3s;transition:background-color .3s;}
 .clbl{font-family:var(--fmono);font-size:clamp(.94rem,1.265vw,1.38rem);letter-spacing:.1em;text-transform:uppercase;
-  color:#d8d8ec;margin-bottom:.3rem;}
+  color:var(--clbl-color);margin-bottom:.3rem;}
 /* valor principal linha 1: ~6.9vw = ~88px em 1280px (+15%) */
 .cval{font-size:clamp(2.3rem,6.9vw,5.75rem);font-weight:700;line-height:1.05;
   letter-spacing:-.02em;color:var(--tx);
@@ -162,7 +167,7 @@ header{
   display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:center;justify-content:center;
   -webkit-transition:background-color .3s;transition:background-color .3s;}
 .slbl{font-family:var(--fmono);font-size:clamp(.94rem,1.265vw,1.38rem);letter-spacing:.1em;text-transform:uppercase;
-  color:#d8d8ec;margin-bottom:.22rem;}
+  color:var(--clbl-color);margin-bottom:.22rem;}
 .sval{font-size:clamp(2.4rem,4.8vw,4.32rem);font-weight:700;line-height:1.05;letter-spacing:-.01em;}
 .ssub{font-family:var(--fmono);font-size:clamp(.72rem,.9vw,1rem);margin-top:.28rem;}
 
@@ -191,7 +196,7 @@ header{
   -webkit-align-items:center;align-items:center;
   margin-bottom:.28rem;position:relative;z-index:1;
 }
-.zc-lbl{font-family:var(--fmono);font-size:clamp(.94rem,1.265vw,1.38rem);letter-spacing:.1em;text-transform:uppercase;color:#d8d8ec;}
+.zc-lbl{font-family:var(--fmono);font-size:clamp(.94rem,1.265vw,1.38rem);letter-spacing:.1em;text-transform:uppercase;color:var(--clbl-color);}
 .zc-mult{
   font-family:var(--fmono);font-size:clamp(.75rem,1vw,1.1rem);letter-spacing:.06em;font-weight:600;
   padding:.12rem .48rem;border-radius:3px;border:1px solid var(--zc);
@@ -816,6 +821,8 @@ function adaptMobile() {
 window.addEventListener('resize', adaptMobile);
 window.addEventListener('orientationchange', function(){ setTimeout(adaptMobile, 300); });
 
+/* FULLSCREEN */
+function toggleFS(){
   if(!S.fsActive){
     var el=document.documentElement;
     if(el.requestFullscreen)el.requestFullscreen();
