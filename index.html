@@ -97,6 +97,8 @@ header{
   -webkit-align-items:center;align-items:center;line-height:1;}
 .icon-btn:active{opacity:.7;}
 .fs-btn{background:rgba(247,147,26,.09);border:1px solid rgba(247,147,26,.38);color:var(--btc);}
+.inst-btn{background:rgba(52,211,153,.09);border:1px solid rgba(52,211,153,.38);color:var(--grn);display:none;}
+.inst-btn.visible{display:-webkit-inline-flex;display:inline-flex;}
 
 /* GRID ROW */
 .grid-row{display:-webkit-flex;display:flex;gap:1px;background:var(--b1);
@@ -277,6 +279,7 @@ body.fs-mode .zone-card{padding:.72rem .9rem;}
     </button>
     <div class="hts" id="hts">&mdash;</div>
     <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">DRK</button>
+    <button class="icon-btn inst-btn" id="instBtn" onclick="installPWA()">+ instalar</button>
     <button class="icon-btn fs-btn" id="fsBtn" onclick="toggleFS()">[ ]</button>
   </div>
 </header>
@@ -653,6 +656,39 @@ if('serviceWorker' in navigator){
     navigator.serviceWorker.register('./sw.js').catch(function(){});
   });
 }
+
+/* PWA — INSTALAÇÃO */
+var _installPrompt = null;
+window.addEventListener('beforeinstallprompt', function(e) {
+  e.preventDefault();
+  _installPrompt = e;
+  var btn = document.getElementById('instBtn');
+  if(btn) btn.classList.add('visible');
+});
+window.addEventListener('appinstalled', function() {
+  _installPrompt = null;
+  var btn = document.getElementById('instBtn');
+  if(btn) btn.classList.remove('visible');
+});
+function installPWA() {
+  if(!_installPrompt) return;
+  _installPrompt.prompt();
+  _installPrompt.userChoice.then(function() { _installPrompt = null; });
+}
+
+/* WAKE LOCK — tela sempre ligada */
+var _wakeLock = null;
+function requestWakeLock() {
+  if('wakeLock' in navigator) {
+    navigator.wakeLock.request('screen')
+      .then(function(wl) { _wakeLock = wl; })
+      .catch(function() {});
+  }
+}
+requestWakeLock();
+document.addEventListener('visibilitychange', function() {
+  if(document.visibilityState === 'visible') requestWakeLock();
+});
 
 /* FULLSCREEN */
 function toggleFS(){

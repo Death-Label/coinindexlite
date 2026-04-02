@@ -3,7 +3,7 @@
   "short_name": "BTC Lite",
   "description": "Dashboard leve de Bitcoin com Mayer Multiple, zonas de mercado e câmbio BRL.",
   "start_url": "./index.html",
-  "display": "standalone",
+  "display": "fullscreen",
   "orientation": "any",
   "background_color": "#080810",
   "theme_color": "#f7931a",
