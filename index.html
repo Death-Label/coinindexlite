@@ -187,7 +187,7 @@ header{
 }
 .zc-top{
   display:-webkit-flex;display:flex;
-  -webkit-justify-content:flex-start;justify-content:flex-start;
+  -webkit-justify-content:space-between;justify-content:space-between;
   -webkit-align-items:center;align-items:center;
   margin-bottom:.28rem;position:relative;z-index:1;
 }
@@ -196,7 +196,7 @@ header{
   font-family:var(--fmono);font-size:clamp(.75rem,1vw,1.1rem);letter-spacing:.06em;font-weight:600;
   padding:.12rem .48rem;border-radius:3px;border:1px solid var(--zc);
   color:var(--zc);background:rgba(0,0,0,.15);
-  position:absolute;top:1rem;right:1.2rem;z-index:2;
+  -webkit-flex-shrink:0;flex-shrink:0;
   -webkit-transition:color .4s,border-color .4s;transition:color .4s,border-color .4s;
 }
 /* nome da zona — destaque principal */
@@ -252,33 +252,37 @@ body.fs-mode .zone-card{padding:.72rem .9rem;}
 
 /* RESPONSIVE */
 @media(max-width:600px){
-  .mcell{-webkit-flex:1 1 100%;flex:1 1 100%;padding:.6rem .9rem;}
-  .rcell{-webkit-flex:1 1 100%;flex:1 1 100%;padding:.5rem .9rem;}
-  .cval{font-size:clamp(1.4rem,5.5vh,3rem);}
-  .rval{font-size:clamp(1.1rem,4vh,2rem);}
-  .clbl{font-size:clamp(.7rem,1.2vh,1rem);}
-  .cbadge{font-size:clamp(.6rem,1vh,.85rem);}
-  .cinfo{font-size:clamp(.6rem,1vh,.85rem);}
-  .isel{margin-top:.2rem;}
-  .ibtn{font-size:clamp(.6rem,1vh,.85rem);padding:.12rem .4rem;}
-  .scell{width:auto;-webkit-flex:1 1 40%;flex:1 1 40%;padding:.6rem .9rem;}
-  .slbl{font-size:clamp(.7rem,1.2vh,1rem);}
-  .sval{font-size:clamp(1.6rem,5vh,3rem);}
-  .ssub{font-size:clamp(.6rem,1vh,.85rem);}
-  .zone-card{-webkit-flex:1 1 55%;flex:1 1 55%;padding:.6rem .9rem .6rem 1rem;}
-  .zc-lbl{font-size:clamp(.7rem,1.2vh,1rem);}
-  .zc-name{font-size:clamp(1.4rem,4.5vh,2.5rem);}
-  .zc-ref-val{font-size:clamp(.8rem,1.5vh,1.1rem);}
-  .zc-dist{font-size:clamp(.8rem,1.5vh,1.1rem);}
-  .zc-range{font-size:clamp(.6rem,1vh,.85rem);}
-  .zc-mult{font-size:clamp(.6rem,.9vh,.9rem);top:.6rem;right:.7rem;}
-  .fn{font-size:clamp(.45rem,1vh,.65rem);}
-  header{-webkit-flex-direction:row;flex-direction:row;-webkit-align-items:center;align-items:center;padding:.5rem 0;}
-  .wordmark{font-size:clamp(.75rem,2vw,.95rem);}
-  .hdr-right{gap:.25rem;}
-  .ws-pill,.cd-pill{font-size:clamp(.6rem,1.8vw,.78rem);padding:.3rem .6rem;}
-  .hts{font-size:clamp(.6rem,1.8vw,.78rem);}
-  .icon-btn{font-size:clamp(.6rem,1.8vw,.78rem);padding:.3rem .7rem;}
+  html,body{overflow:hidden;height:100%;width:100%;}
+  #app{height:100dvh;height:100vh;overflow:hidden;padding:0 .75rem;min-height:unset;}
+  .mcell{-webkit-flex:1 1 100%;flex:1 1 100%;padding:.5rem .9rem;overflow:hidden;}
+  .rcell{-webkit-flex:1 1 100%;flex:1 1 100%;padding:.4rem .9rem;overflow:hidden;}
+  .cval{font-size:clamp(1.2rem,4.5vh,2.5rem);}
+  .rval{font-size:clamp(1rem,3.5vh,1.8rem);}
+  .clbl{font-size:clamp(.65rem,1.1vh,.9rem);}
+  .cbadge{font-size:clamp(.55rem,.95vh,.8rem);}
+  .cinfo{font-size:clamp(.55rem,.95vh,.8rem);}
+  .isel{margin-top:.15rem;}
+  .ibtn{font-size:clamp(.55rem,.95vh,.8rem);padding:.1rem .35rem;}
+  .scell{width:auto;-webkit-flex:1 1 38%;flex:1 1 38%;padding:.5rem .8rem;overflow:hidden;}
+  .slbl{font-size:clamp(.65rem,1.1vh,.9rem);}
+  .sval{font-size:clamp(1.4rem,4vh,2.5rem);}
+  .ssub{font-size:clamp(.55rem,.95vh,.8rem);}
+  .zone-card{-webkit-flex:1 1 58%;flex:1 1 58%;padding:.5rem .8rem .5rem .9rem;overflow:hidden;}
+  .zc-lbl{font-size:clamp(.65rem,1.1vh,.9rem);}
+  .zc-mult{font-size:clamp(.55rem,.9vh,.85rem);}
+  .zc-name{font-size:clamp(1.2rem,3.8vh,2.2rem);}
+  .zc-ref-val{font-size:clamp(.75rem,1.4vh,1rem);}
+  .zc-dist{font-size:clamp(.75rem,1.4vh,1rem);}
+  .zc-range{font-size:clamp(.55rem,.95vh,.8rem);}
+  .fn{font-size:clamp(.42rem,.85vh,.6rem);}
+  header{padding:.4rem 0;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;}
+  .wordmark{font-size:clamp(.7rem,1.8vw,.9rem);}
+  .hdr-right{gap:.2rem;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;}
+  .ws-pill,.cd-pill{font-size:clamp(.55rem,1.6vw,.72rem);padding:.25rem .5rem;}
+  .hts{font-size:clamp(.55rem,1.6vw,.72rem);}
+  .icon-btn{font-size:clamp(.55rem,1.6vw,.72rem);padding:.25rem .6rem;}
+  .grid-row{margin-top:.45rem;}
+  footer{margin-top:.3rem;padding:.3rem 0;}
 }
 </style>
 </head>
