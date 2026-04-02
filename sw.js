@@ -1,4 +1,4 @@
-const CACHE = 'btclite-v1';
+const CACHE = 'btclite-v2';
 const ASSETS = [
   './index.html',
   './icons/icon-192.png',
@@ -8,7 +8,9 @@ const ASSETS = [
 self.addEventListener('install', function(e) {
   e.waitUntil(
     caches.open(CACHE).then(function(cache) {
-      return cache.addAll(ASSETS);
+      return Promise.allSettled(
+        ASSETS.map(function(url) { return cache.add(url); })
+      );
     })
   );
   self.skipWaiting();
@@ -27,15 +29,22 @@ self.addEventListener('activate', function(e) {
 });
 
 self.addEventListener('fetch', function(e) {
-  // Requisições às APIs externas (Binance, CoinGecko) — sempre online
-  if (e.request.url.indexOf('binance.com') > -1 ||
-      e.request.url.indexOf('coingecko.com') > -1) {
+  var url = e.request.url;
+
+  // APIs externas — sempre online, nunca intercepta
+  if (url.indexOf('binance.com') > -1 ||
+      url.indexOf('coingecko.com') > -1 ||
+      url.indexOf('chrome-extension') > -1) {
     return;
   }
-  // Assets locais — cache first
+
+  // Assets locais — cache first, sem erro se falhar
   e.respondWith(
     caches.match(e.request).then(function(cached) {
-      return cached || fetch(e.request);
+      if (cached) return cached;
+      return fetch(e.request).catch(function() {
+        // falha silenciosa — não quebra o app
+      });
     })
   );
 });
