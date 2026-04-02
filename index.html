@@ -253,28 +253,31 @@ body.fs-mode .zone-card{padding:.72rem .9rem;}
 /* RESPONSIVE */
 @media(max-width:600px){
   html,body{overflow:hidden;height:100%;width:100%;}
-  #app{overflow:hidden;padding:0 .75rem;min-height:unset;}
+  #app{
+    height:calc(var(--vh, 1vh) * 100);
+    overflow:hidden;padding:0 .75rem;min-height:unset;
+  }
   .mcell{-webkit-flex:1 1 100%;flex:1 1 100%;padding:.5rem .9rem;overflow:hidden;}
   .rcell{-webkit-flex:1 1 100%;flex:1 1 100%;padding:.4rem .9rem;overflow:hidden;}
-  .cval{font-size:var(--m-main,clamp(1.2rem,4.5vh,2.5rem));}
-  .rval{font-size:var(--m-sub,clamp(1rem,3.5vh,1.8rem));}
-  .clbl{font-size:var(--m-lbl,clamp(.65rem,1.1vh,.9rem));}
-  .cbadge{font-size:var(--m-sm,clamp(.55rem,.95vh,.8rem));}
-  .cinfo{font-size:var(--m-sm,clamp(.55rem,.95vh,.8rem));}
+  .cval{font-size:clamp(1.2rem,4.5vh,2.5rem);}
+  .rval{font-size:clamp(1rem,3.5vh,1.8rem);}
+  .clbl{font-size:clamp(.65rem,1.1vh,.9rem);}
+  .cbadge{font-size:clamp(.55rem,.95vh,.8rem);}
+  .cinfo{font-size:clamp(.55rem,.95vh,.8rem);}
   .isel{margin-top:.15rem;}
-  .ibtn{font-size:var(--m-sm,clamp(.55rem,.95vh,.8rem));padding:.1rem .35rem;}
+  .ibtn{font-size:clamp(.55rem,.95vh,.8rem);padding:.1rem .35rem;}
   .scell{width:auto;-webkit-flex:1 1 38%;flex:1 1 38%;padding:.5rem .8rem;overflow:hidden;}
-  .slbl{font-size:var(--m-lbl,clamp(.65rem,1.1vh,.9rem));}
-  .sval{font-size:var(--m-main,clamp(1.4rem,4vh,2.5rem));}
-  .ssub{font-size:var(--m-sm,clamp(.55rem,.95vh,.8rem));}
+  .slbl{font-size:clamp(.65rem,1.1vh,.9rem);}
+  .sval{font-size:clamp(1.4rem,4vh,2.5rem);}
+  .ssub{font-size:clamp(.55rem,.95vh,.8rem);}
   .zone-card{-webkit-flex:1 1 58%;flex:1 1 58%;padding:.5rem .8rem .5rem .9rem;overflow:hidden;}
-  .zc-lbl{font-size:var(--m-lbl,clamp(.65rem,1.1vh,.9rem));}
-  .zc-mult{font-size:var(--m-sm,clamp(.55rem,.9vh,.85rem));}
-  .zc-name{font-size:var(--m-sub,clamp(1.2rem,3.8vh,2.2rem));}
-  .zc-ref-val{font-size:var(--m-sm,clamp(.75rem,1.4vh,1rem));}
-  .zc-dist{font-size:var(--m-sm,clamp(.75rem,1.4vh,1rem));}
-  .zc-range{font-size:var(--m-sm,clamp(.55rem,.95vh,.8rem));}
-  .fn{font-size:var(--m-sm,clamp(.42rem,.85vh,.6rem));}
+  .zc-lbl{font-size:clamp(.65rem,1.1vh,.9rem);}
+  .zc-mult{font-size:clamp(.55rem,.9vh,.85rem);}
+  .zc-name{font-size:clamp(1.2rem,3.8vh,2.2rem);}
+  .zc-ref-val{font-size:clamp(.75rem,1.4vh,1rem);}
+  .zc-dist{font-size:clamp(.75rem,1.4vh,1rem);}
+  .zc-range{font-size:clamp(.55rem,.95vh,.8rem);}
+  .fn{font-size:clamp(.42rem,.85vh,.6rem);}
   header{padding:.4rem 0;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;}
   .wordmark{font-size:clamp(.7rem,1.8vw,.9rem);}
   .hdr-right{gap:.2rem;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;}
@@ -777,45 +780,8 @@ document.addEventListener('visibilitychange', function() {
   if (document.visibilityState === 'visible') requestWakeLock();
 });
 
-/* ADAPTAÇÃO MOBILE — mede tela real e ajusta fontes */
-function adaptMobile() {
-  var w = window.innerWidth;
-  var h = window.innerHeight;
-  if (w >= 600) return; // desktop — CSS cuida
-
-  var app = g('app');
-  if (!app) return;
-
-  // Força altura exata da tela visível
-  app.style.height = h + 'px';
-  app.style.minHeight = 'unset';
-
-  // Mede elementos reais após render
-  var hdr = document.querySelector('header');
-  var ftr = document.querySelector('footer');
-  var hdrH = hdr ? hdr.getBoundingClientRect().height : 56;
-  var ftrH = ftr ? ftr.getBoundingClientRect().height : 28;
-  var rows = document.querySelectorAll('.grid-row');
-  var nRows = rows.length || 3;
-  var gaps = nRows * 7; // margem entre rows em px
-  var pad = 16; // padding lateral do app não afeta altura
-
-  var available = h - hdrH - ftrH - gaps - pad;
-  var cardH = Math.max(available / nRows, 60);
-
-  var r = document.documentElement;
-  // Fonte principal (BTC price, Mayer value)
-  r.style.setProperty('--m-main', Math.min(cardH * 0.32, 44) + 'px');
-  // Fonte secundária (câmbios, zone name)
-  r.style.setProperty('--m-sub',  Math.min(cardH * 0.22, 30) + 'px');
-  // Labels e textos pequenos
-  r.style.setProperty('--m-lbl',  Math.max(cardH * 0.075, 10) + 'px');
-  r.style.setProperty('--m-sm',   Math.max(cardH * 0.065, 9)  + 'px');
-}
-
-window.addEventListener('resize', adaptMobile);
-window.addEventListener('orientationchange', function(){ setTimeout(adaptMobile, 300); });
-
+/* FULLSCREEN */
+function toggleFS(){
   if(!S.fsActive){
     var el=document.documentElement;
     if(el.requestFullscreen)el.requestFullscreen();
@@ -852,7 +818,6 @@ applyTheme(_theme);
       g('ld').style.display='none';
       g('app').classList.remove('hidden');
       updateLive();
-      setTimeout(adaptMobile, 50);
     })
     .catch(function(e){
       g('errBody').textContent='N\u00e3o foi poss\u00edvel carregar.\nVerifique sua conex\u00e3o.\n\n'+(e&&e.message?e.message:'');
