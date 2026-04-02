@@ -1,4 +1,4 @@
-const CACHE = 'btclite-v6';
+const CACHE = 'btclite-v7';
 const ASSETS = [
   './index.html',
   './icons/icon-192.png',
