@@ -54,7 +54,9 @@ body{background:var(--bg);color:var(--tx);font-family:var(--fm);min-height:100vh
   color:var(--btc);padding:.4rem 1rem;border-radius:4px;cursor:pointer;}
 
 /* APP */
-#app{position:relative;max-width:960px;margin:0 auto;padding:0 1rem 1rem;}
+#app{position:relative;max-width:100%;width:100%;margin:0 auto;padding:0 1rem 1rem;
+  box-sizing:border-box;}
+html,body{width:100%;height:100%;overflow-x:hidden;}
 .hidden{display:none!important;}
 
 /* HEADER */
@@ -678,16 +680,56 @@ function installPWA() {
 
 /* WAKE LOCK — tela sempre ligada */
 var _wakeLock = null;
+var _noSleepVideo = null;
+
+function _createNoSleepVideo() {
+  // Fallback: vídeo invisível em loop força a tela a ficar ligada
+  var v = document.createElement('video');
+  v.setAttribute('playsinline', '');
+  v.setAttribute('muted', '');
+  v.loop = true;
+  v.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;';
+  // MP4 mínimo em base64 (1 frame preto, 1 segundo)
+  v.src = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAA'+'rBtZGF0AAAAMmZyZWUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=';
+  document.body.appendChild(v);
+  return v;
+}
+
 function requestWakeLock() {
-  if('wakeLock' in navigator) {
+  if ('wakeLock' in navigator) {
     navigator.wakeLock.request('screen')
-      .then(function(wl) { _wakeLock = wl; })
-      .catch(function() {});
+      .then(function(wl) {
+        _wakeLock = wl;
+        // Se o vídeo estava rodando como fallback, para
+        if (_noSleepVideo) { _noSleepVideo.pause(); }
+      })
+      .catch(function() {
+        // Wake Lock falhou — ativa fallback de vídeo
+        _activateVideoFallback();
+      });
+  } else {
+    _activateVideoFallback();
   }
 }
-requestWakeLock();
+
+function _activateVideoFallback() {
+  if (!_noSleepVideo) _noSleepVideo = _createNoSleepVideo();
+  _noSleepVideo.play().catch(function() {});
+}
+
+// Ativa ao primeiro toque/clique do usuário (necessário para autoplay)
+var _wakeLockActivated = false;
+function _onFirstGesture() {
+  if (_wakeLockActivated) return;
+  _wakeLockActivated = true;
+  requestWakeLock();
+}
+document.addEventListener('touchstart', _onFirstGesture, {once: false, passive: true});
+document.addEventListener('click', _onFirstGesture, {once: false, passive: true});
+
+// Reativa quando o app volta ao foco
 document.addEventListener('visibilitychange', function() {
-  if(document.visibilityState === 'visible') requestWakeLock();
+  if (document.visibilityState === 'visible') requestWakeLock();
 });
 
 /* FULLSCREEN */
