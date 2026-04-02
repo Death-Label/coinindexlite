@@ -253,7 +253,10 @@ body.fs-mode .zone-card{padding:.72rem .9rem;}
 /* RESPONSIVE */
 @media(max-width:600px){
   html,body{overflow:hidden;height:100%;width:100%;}
-  #app{height:100dvh;height:100vh;overflow:hidden;padding:0 .75rem;min-height:unset;}
+  #app{
+    height:calc(var(--vh, 1vh) * 100);
+    overflow:hidden;padding:0 .75rem;min-height:unset;
+  }
   .mcell{-webkit-flex:1 1 100%;flex:1 1 100%;padding:.5rem .9rem;overflow:hidden;}
   .rcell{-webkit-flex:1 1 100%;flex:1 1 100%;padding:.4rem .9rem;overflow:hidden;}
   .cval{font-size:clamp(1.2rem,4.5vh,2.5rem);}
@@ -685,6 +688,17 @@ function refreshData(){
     .catch(function(){})
     .then(function(){startCountdown();});
 }
+
+/* VIEWPORT HEIGHT FIX — corrige 100vh no mobile Chrome */
+function setVh() {
+  var vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', vh + 'px');
+}
+setVh();
+window.addEventListener('resize', setVh);
+window.addEventListener('orientationchange', function() {
+  setTimeout(setVh, 200);
+});
 
 /* PWA — SERVICE WORKER */
 if('serviceWorker' in navigator){
