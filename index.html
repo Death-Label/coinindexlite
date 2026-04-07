@@ -639,10 +639,19 @@ function updateBadges(){
     ['hpUsdBadge','hpBrlBadge'].forEach(function(id){g(id).textContent='\u2014';g(id).className='cbadge neu';});
     return;
   }
-  var chg=(p-ref)/ref*100,cls='cbadge '+(chg>=0?'pos':'neg');
-  var txt=(chg>=0?'\u25b2 +':'\u25bc ')+n2(Math.abs(chg),2)+'%  vs '+iv.label;
-  ['hpUsdBadge','hpBrlBadge'].forEach(function(id){g(id).textContent=txt;g(id).className=cls;});
+  /* USD badge — variação em USD */
+  var chgUsd=(p-ref)/ref*100,clsUsd='cbadge '+(chgUsd>=0?'pos':'neg');
+  var txtUsd=(chgUsd>=0?'\u25b2 +':'\u25bc ')+n2(Math.abs(chgUsd),2)+'%  vs '+iv.label;
+  g('hpUsdBadge').textContent=txtUsd;g('hpUsdBadge').className=clsUsd;
   g('hpUsdClose').textContent=usd(ref,0);
+  /* BRL badge — variação em BRL usando closeRefBrl */
+  if(S.liveBrl&&S.closeRefBrl){
+    var chgBrl=(S.liveBrl-S.closeRefBrl)/S.closeRefBrl*100,clsBrl='cbadge '+(chgBrl>=0?'pos':'neg');
+    var txtBrl=(chgBrl>=0?'\u25b2 +':'\u25bc ')+n2(Math.abs(chgBrl),2)+'%  vs '+iv.label;
+    g('hpBrlBadge').textContent=txtBrl;g('hpBrlBadge').className=clsBrl;
+  } else {
+    g('hpBrlBadge').textContent=txtUsd;g('hpBrlBadge').className=clsUsd;
+  }
   g('hpBrlClose').textContent=S.closeRefBrl?brl0(S.closeRefBrl):'\u2014';
 }
 
@@ -727,7 +736,8 @@ function fetchMA200(){
       return fetch('https://api.coingecko.com/api/v3/coins/bitcoin/market_chart?vs_currency=usd&days=201&interval=daily')
         .then(function(r){return r.json();})
         .then(function(d){
-          var prices=d.prices.slice(0,200),sum=0;
+          /* slice(-201,-1): descarta o ponto atual (aberto), pega os 200 fechados mais recentes */
+          var prices=d.prices.slice(-201,-1),sum=0;
           for(var j=0;j<prices.length;j++)sum+=prices[j][1];
           S.curMa=sum/prices.length;
         }).catch(function(){});
@@ -749,7 +759,7 @@ function fetchCloseInit(){
 
 function refreshData(){
   g('hdCd').textContent='\u2026';
-  Promise.all([fetchMA200(),fetchCloseInit(),fetchInitialRates(),fetchInitialBrl()])
+  Promise.all([fetchMA200(),fetchClose(S.selectedIv),fetchInitialRates(),fetchInitialBrl()])
     .then(function(){updateLive();})
     .catch(function(){})
     .then(function(){startCountdown();});
