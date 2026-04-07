@@ -153,6 +153,8 @@ header{
 /* SCELL — Mayer */
 .scell{background:var(--card-strong);padding:1.2rem 1.4rem;
   -webkit-flex:0 0 auto;flex:0 0 auto;width:clamp(180px,22%,260px);min-width:0;
+  display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;
+  -webkit-justify-content:center;justify-content:center;
   -webkit-transition:background-color .3s;transition:background-color .3s;}
 .slbl{font-family:var(--fmono);font-size:clamp(.94rem,1.265vw,1.38rem);letter-spacing:.1em;text-transform:uppercase;
   color:var(--lbl);margin-bottom:.22rem;}
@@ -178,14 +180,10 @@ header{
   background:var(--zc);opacity:.08;pointer-events:none;
   -webkit-transition:background .4s;transition:background .4s;
 }
-.zc-top{
-  display:-webkit-flex;display:flex;
-  -webkit-justify-content:space-between;justify-content:space-between;
-  -webkit-align-items:center;align-items:center;
-  margin-bottom:.28rem;position:relative;z-index:1;
-}
+.zc-top{margin-bottom:.28rem;position:relative;z-index:1;}
 .zc-lbl{font-family:var(--fmono);font-size:clamp(.94rem,1.265vw,1.38rem);letter-spacing:.1em;text-transform:uppercase;color:var(--lbl);}
 .zc-mult{
+  position:absolute;top:0;right:0;
   font-family:var(--fmono);font-size:clamp(.75rem,1vw,1.1rem);letter-spacing:.06em;font-weight:600;
   padding:.12rem .48rem;border-radius:3px;border:1px solid var(--zc);
   color:var(--zc);background:rgba(0,0,0,.15);
@@ -224,8 +222,8 @@ footer{border-top:1px solid var(--b1);padding:.45rem 0;margin-top:.4rem;
 
 /* INSTALL BUTTON */
 #installBtn{
-  display:none;background:rgba(247,147,26,.09);border:1px solid rgba(247,147,26,.38);
-  border-radius:999px;color:var(--btc);font-family:var(--fmono);font-size:.92rem;
+  display:none;background:rgba(34,211,238,.1);border:1px solid rgba(34,211,238,.45);
+  border-radius:999px;color:#22d3ee;font-family:var(--fmono);font-size:.92rem;
   padding:.45rem .9rem;cursor:pointer;
   -webkit-align-items:center;align-items:center;line-height:1;gap:.4rem;
 }
@@ -307,10 +305,10 @@ body.fs-mode .zone-card{padding:.72rem .9rem;}
     </button>
     <div class="hts" id="hts">&mdash;</div>
     <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">DRK</button>
-    <button class="icon-btn fs-btn" id="fsBtn" onclick="toggleFS()">[ ]</button>
     <button id="installBtn" aria-label="Instalar app">
       <svg viewBox="0 0 24 24"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
     </button>
+    <button class="icon-btn fs-btn" id="fsBtn" onclick="toggleFS()">[ ]</button>
   </div>
 </header>
 
