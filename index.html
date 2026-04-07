@@ -4,15 +4,14 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
-<meta name="theme-color" content="#f7931a">
+<title>Bitcoin Index · Lite</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#080810">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="BTC Lite">
-<link rel="manifest" href="./manifest.json">
-<link rel="apple-touch-icon" href="./icons/icon-192.png">
-<link rel="icon" type="image/x-icon" href="./favicon.ico">
-<title>Bitcoin Index · Lite</title>
+<meta name="apple-mobile-web-app-title" content="BTC Index">
+<link rel="apple-touch-icon" href="icons/icon-192.png">
 <style>
 :root{
   --bg:#080810;--card:#0c0c1a;--card-strong:#131320;
@@ -22,15 +21,15 @@
   --fm:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Arial,sans-serif;
   --fmono:'Courier New',Consolas,monospace;
   --zc:#a0a0c8;
+  --lbl:#d8d8ec;
 }
 [data-theme="light"]{
   --bg:#f0eff8;--card:#e8e7f4;--card-strong:#dddcee;
   --b1:rgba(0,0,0,0.07);--b2:rgba(0,0,0,0.13);
-  --tx:#16152e;--tx2:#3b3a5c;--tx3:#7a789a;
   --btc:#c47000;--grn:#0d9260;--red:#d93636;
-  --clbl-color:#4a4870;
+  --tx:#16152e;--tx2:#3b3a5c;--tx3:#7a789a;
+  --lbl:#5a587a;
 }
-[data-theme="dark"]{--clbl-color:#d8d8ec;}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
 html{font-size:16px;-webkit-text-size-adjust:100%;}
 body{background:var(--bg);color:var(--tx);font-family:var(--fm);min-height:100vh;overflow-x:hidden;}
@@ -58,11 +57,7 @@ body{background:var(--bg);color:var(--tx);font-family:var(--fm);min-height:100vh
   color:var(--btc);padding:.4rem 1rem;border-radius:4px;cursor:pointer;}
 
 /* APP */
-#app{position:relative;max-width:100%;width:100%;margin:0 auto;padding:0 1rem;
-  box-sizing:border-box;min-height:100vh;
-  display:-webkit-flex;display:flex;
-  -webkit-flex-direction:column;flex-direction:column;}
-html,body{width:100%;height:100%;overflow-x:hidden;}
+#app{position:relative;width:100%;padding:0 1rem 1rem;}
 .hidden{display:none!important;}
 
 /* HEADER */
@@ -105,28 +100,23 @@ header{
   -webkit-align-items:center;align-items:center;line-height:1;}
 .icon-btn:active{opacity:.7;}
 .fs-btn{background:rgba(247,147,26,.09);border:1px solid rgba(247,147,26,.38);color:var(--btc);}
-.inst-btn{background:rgba(52,211,153,.09);border:1px solid rgba(52,211,153,.38);color:var(--grn);display:none;padding:.45rem .7rem;}
-.inst-btn.visible{display:-webkit-inline-flex;display:inline-flex;}
 
 /* GRID ROW */
 .grid-row{display:-webkit-flex;display:flex;gap:1px;background:var(--b1);
   border:1px solid var(--b1);border-radius:10px;overflow:hidden;
   margin-top:.65rem;flex-wrap:wrap;
-  -webkit-flex:1 1 0;flex:1 1 0;min-height:0;
   -webkit-transition:background-color .3s,border-color .3s;transition:background-color .3s,border-color .3s;}
 /* linha 3 (Mayer + Zona) com fundo e borda destacados */
 .grid-row.row-strong{background:var(--b1);border:1px solid var(--b2);}
 
 /* MCELL — linha 1 (BTC): ocupa 50% cada */
 .mcell{background:var(--card);padding:1.4rem 1.8rem;-webkit-flex:1 1 45%;flex:1 1 45%;min-width:0;
-  display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:center;justify-content:center;
   -webkit-transition:background-color .3s;transition:background-color .3s;}
 /* RCELL — linha 2 (câmbios): ocupa 50% cada */
 .rcell{background:var(--card);padding:1.2rem 1.8rem;-webkit-flex:1 1 45%;flex:1 1 45%;min-width:0;
-  display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:center;justify-content:center;
   -webkit-transition:background-color .3s;transition:background-color .3s;}
 .clbl{font-family:var(--fmono);font-size:clamp(.94rem,1.265vw,1.38rem);letter-spacing:.1em;text-transform:uppercase;
-  color:var(--clbl-color);margin-bottom:.3rem;}
+  color:var(--lbl);margin-bottom:.3rem;}
 /* valor principal linha 1: ~6.9vw = ~88px em 1280px (+15%) */
 .cval{font-size:clamp(2.3rem,6.9vw,5.75rem);font-weight:700;line-height:1.05;
   letter-spacing:-.02em;color:var(--tx);
@@ -163,10 +153,9 @@ header{
 /* SCELL — Mayer */
 .scell{background:var(--card-strong);padding:1.2rem 1.4rem;
   -webkit-flex:0 0 auto;flex:0 0 auto;width:clamp(180px,22%,260px);min-width:0;
-  display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;-webkit-justify-content:center;justify-content:center;
   -webkit-transition:background-color .3s;transition:background-color .3s;}
 .slbl{font-family:var(--fmono);font-size:clamp(.94rem,1.265vw,1.38rem);letter-spacing:.1em;text-transform:uppercase;
-  color:var(--clbl-color);margin-bottom:.22rem;}
+  color:var(--lbl);margin-bottom:.22rem;}
 .sval{font-size:clamp(2.4rem,4.8vw,4.32rem);font-weight:700;line-height:1.05;letter-spacing:-.01em;}
 .ssub{font-family:var(--fmono);font-size:clamp(.72rem,.9vw,1rem);margin-top:.28rem;}
 
@@ -195,12 +184,11 @@ header{
   -webkit-align-items:center;align-items:center;
   margin-bottom:.28rem;position:relative;z-index:1;
 }
-.zc-lbl{font-family:var(--fmono);font-size:clamp(.94rem,1.265vw,1.38rem);letter-spacing:.1em;text-transform:uppercase;color:var(--clbl-color);}
+.zc-lbl{font-family:var(--fmono);font-size:clamp(.94rem,1.265vw,1.38rem);letter-spacing:.1em;text-transform:uppercase;color:var(--lbl);}
 .zc-mult{
   font-family:var(--fmono);font-size:clamp(.75rem,1vw,1.1rem);letter-spacing:.06em;font-weight:600;
   padding:.12rem .48rem;border-radius:3px;border:1px solid var(--zc);
   color:var(--zc);background:rgba(0,0,0,.15);
-  -webkit-flex-shrink:0;flex-shrink:0;
   -webkit-transition:color .4s,border-color .4s;transition:color .4s,border-color .4s;
 }
 /* nome da zona — destaque principal */
@@ -231,18 +219,41 @@ header{
 /* FOOTER */
 footer{border-top:1px solid var(--b1);padding:.45rem 0;margin-top:.4rem;
   display:-webkit-flex;display:flex;-webkit-justify-content:space-between;justify-content:space-between;
-  flex-wrap:wrap;gap:.2rem;-webkit-flex-shrink:0;flex-shrink:0;
-  -webkit-transition:border-color .3s;transition:border-color .3s;}
+  flex-wrap:wrap;gap:.2rem;-webkit-transition:border-color .3s;transition:border-color .3s;}
 .fn{font-family:var(--fmono);font-size:clamp(.55rem,.7vw,.78rem);color:var(--tx3);}
+
+/* INSTALL BUTTON */
+#installBtn{
+  display:none;background:rgba(247,147,26,.09);border:1px solid rgba(247,147,26,.38);
+  border-radius:999px;color:var(--btc);font-family:var(--fmono);font-size:.92rem;
+  padding:.45rem .9rem;cursor:pointer;
+  -webkit-align-items:center;align-items:center;line-height:1;gap:.4rem;
+}
+#installBtn.visible{display:-webkit-inline-flex;display:inline-flex;}
+#installBtn svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+/* LAYOUT PWA — altura total, cards preenchem a tela */
+html,body{height:100%;}
+body{display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;}
+#app{
+  width:100%;
+  -webkit-flex:1 1 auto;flex:1 1 auto;
+  display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;
+  min-height:0;
+}
+/* fs-mode: remove padding lateral extra (já está 1rem no base) */
+body.fs-mode #app{padding:0 .8rem;}
+.grid-row{-webkit-flex:1 1 0;flex:1 1 0;}
+.grid-row .mcell,.grid-row .rcell{
+  display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;
+  -webkit-justify-content:center;justify-content:center;
+}
+footer{-webkit-flex-shrink:0;flex-shrink:0;}
 
 /* FULLSCREEN */
 body.fs-mode{overflow:hidden;}
-body.fs-mode #app{max-width:100%;padding:0 .8rem;height:100vh;
-  display:-webkit-flex;display:flex;-webkit-flex-direction:column;flex-direction:column;
-  -webkit-justify-content:center;justify-content:center;}
-body.fs-mode header{padding:.4rem 0 .35rem;-webkit-flex-shrink:0;flex-shrink:0;}
-body.fs-mode .grid-row{margin-top:.45rem;-webkit-flex-shrink:0;flex-shrink:0;}
-body.fs-mode footer{-webkit-flex-shrink:0;flex-shrink:0;}
+body.fs-mode header{padding:.4rem 0 .35rem;}
+body.fs-mode .grid-row{margin-top:.45rem;}
 body.fs-mode .mcell,
 body.fs-mode .rcell,
 body.fs-mode .scell,
@@ -256,40 +267,14 @@ body.fs-mode .zone-card{padding:.72rem .9rem;}
 
 /* RESPONSIVE */
 @media(max-width:600px){
-  html,body{overflow:hidden;height:100%;width:100%;}
-  #app{
-    height:calc(var(--vh, 1vh) * 100);
-    overflow:hidden;padding:0 .75rem;min-height:unset;
-  }
-  .mcell{-webkit-flex:1 1 100%;flex:1 1 100%;padding:.5rem .9rem;overflow:hidden;}
-  .rcell{-webkit-flex:1 1 100%;flex:1 1 100%;padding:.4rem .9rem;overflow:hidden;}
-  .cval{font-size:clamp(1.2rem,4.5vh,2.5rem);}
-  .rval{font-size:clamp(1rem,3.5vh,1.8rem);}
-  .clbl{font-size:clamp(.65rem,1.1vh,.9rem);}
-  .cbadge{font-size:clamp(.55rem,.95vh,.8rem);}
-  .cinfo{font-size:clamp(.55rem,.95vh,.8rem);}
-  .isel{margin-top:.15rem;}
-  .ibtn{font-size:clamp(.55rem,.95vh,.8rem);padding:.1rem .35rem;}
-  .scell{width:auto;-webkit-flex:1 1 38%;flex:1 1 38%;padding:.5rem .8rem;overflow:hidden;}
-  .slbl{font-size:clamp(.65rem,1.1vh,.9rem);}
-  .sval{font-size:clamp(1.4rem,4vh,2.5rem);}
-  .ssub{font-size:clamp(.55rem,.95vh,.8rem);}
-  .zone-card{-webkit-flex:1 1 58%;flex:1 1 58%;padding:.5rem .8rem .5rem .9rem;overflow:hidden;}
-  .zc-lbl{font-size:clamp(.65rem,1.1vh,.9rem);}
-  .zc-mult{font-size:clamp(.55rem,.9vh,.85rem);}
-  .zc-name{font-size:clamp(1.2rem,3.8vh,2.2rem);}
-  .zc-ref-val{font-size:clamp(.75rem,1.4vh,1rem);}
-  .zc-dist{font-size:clamp(.75rem,1.4vh,1rem);}
-  .zc-range{font-size:clamp(.55rem,.95vh,.8rem);}
-  .fn{font-size:clamp(.42rem,.85vh,.6rem);}
-  header{padding:.4rem 0;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;}
-  .wordmark{font-size:clamp(.7rem,1.8vw,.9rem);}
-  .hdr-right{gap:.2rem;-webkit-flex-wrap:nowrap;flex-wrap:nowrap;}
-  .ws-pill,.cd-pill{font-size:clamp(.55rem,1.6vw,.72rem);padding:.25rem .5rem;}
-  .hts{font-size:clamp(.55rem,1.6vw,.72rem);}
-  .icon-btn{font-size:clamp(.55rem,1.6vw,.72rem);padding:.25rem .6rem;}
-  .grid-row{margin-top:.45rem;}
-  footer{margin-top:.3rem;padding:.3rem 0;}
+  .mcell{-webkit-flex:1 1 100%;flex:1 1 100%;padding:.9rem 1rem;}
+  .rcell{-webkit-flex:1 1 100%;flex:1 1 100%;padding:.8rem .9rem;}
+  .cval{font-size:clamp(1.5rem,8vw,2.6rem);}
+  .rval{font-size:clamp(1.1rem,6vw,1.8rem);}
+  .scell{width:auto;-webkit-flex:1 1 44%;flex:1 1 44%;}
+  .zone-card{-webkit-flex:1 1 100%;flex:1 1 100%;}
+  .zc-name{font-size:clamp(1.4rem,4.5vw,2.2rem);}
+  header{-webkit-flex-direction:column;flex-direction:column;-webkit-align-items:flex-start;align-items:flex-start;}
 }
 </style>
 </head>
@@ -322,8 +307,10 @@ body.fs-mode .zone-card{padding:.72rem .9rem;}
     </button>
     <div class="hts" id="hts">&mdash;</div>
     <button class="icon-btn" id="themeBtn" onclick="toggleTheme()">DRK</button>
-    <button class="icon-btn inst-btn" id="instBtn" onclick="installPWA()" title="Instalar app"><svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 2v8M8 10l-3-3M8 10l3-3M3 13h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg></button>
     <button class="icon-btn fs-btn" id="fsBtn" onclick="toggleFS()">[ ]</button>
+    <button id="installBtn" aria-label="Instalar app">
+      <svg viewBox="0 0 24 24"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
+    </button>
   </div>
 </header>
 
@@ -403,6 +390,83 @@ body.fs-mode .zone-card{padding:.72rem .9rem;}
 </div>
 
 <script>
+/* ── SERVICE WORKER ── */
+if('serviceWorker' in navigator){
+  window.addEventListener('load',function(){
+    navigator.serviceWorker.register('./sw.js').catch(function(){});
+  });
+}
+
+/* ── INSTALL BUTTON (beforeinstallprompt) ── */
+var _deferredInstall=null;
+window.addEventListener('beforeinstallprompt',function(e){
+  e.preventDefault();
+  _deferredInstall=e;
+  var btn=document.getElementById('installBtn');
+  if(btn)btn.classList.add('visible');
+});
+window.addEventListener('appinstalled',function(){
+  _deferredInstall=null;
+  var btn=document.getElementById('installBtn');
+  if(btn)btn.classList.remove('visible');
+});
+(function(){
+  var btn=document.getElementById('installBtn');
+  if(btn)btn.addEventListener('click',function(){
+    if(!_deferredInstall)return;
+    _deferredInstall.prompt();
+    _deferredInstall.userChoice.then(function(){_deferredInstall=null;btn.classList.remove('visible');});
+  });
+}());
+
+/* ── WAKE LOCK ── */
+var _wl=null;
+var _wlVideo=null;
+
+function _wlRelease(){
+  if(_wl){try{_wl.release();}catch(e){}}_wl=null;
+}
+function _wlAcquire(){
+  if('wakeLock' in navigator){
+    navigator.wakeLock.request('screen').then(function(lock){
+      _wl=lock;
+      lock.addEventListener('release',function(){_wl=null;});
+    }).catch(function(){_wlFallback();});
+  } else {
+    _wlFallback();
+  }
+}
+function _wlFallback(){
+  /* fallback: vídeo base64 transparente em loop mantém tela ligada */
+  if(_wlVideo)return;
+  var v=document.createElement('video');
+  v.setAttribute('loop','');v.setAttribute('playsinline','');
+  v.style.cssText='position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;';
+  /* vídeo MP4 1px transparente base64 */
+  v.src='data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28ybXA0MAAAAA'
+    +'9tZGF0AAACAAAAAAAAAAAAAAAAAAAAAA==';
+  document.body.appendChild(v);
+  v.play().catch(function(){});
+  _wlVideo=v;
+}
+function _wlReactivate(){
+  _wlRelease();_wlAcquire();
+}
+
+/* Ativa no primeiro gesto (necessário em alguns browsers) */
+var _wlReady=false;
+function _wlInit(){
+  if(_wlReady)return;_wlReady=true;
+  _wlAcquire();
+}
+document.addEventListener('click',_wlInit,{once:true});
+document.addEventListener('touchstart',_wlInit,{once:true});
+/* Reativa ao voltar ao foco */
+document.addEventListener('visibilitychange',function(){
+  if(document.visibilityState==='visible')_wlReactivate();
+});
+window.addEventListener('focus',function(){_wlReactivate();});
+
 var S={
   liveUsd:0,prevUsd:0,
   usdBrl:0,usdcBrl:0,eurcUsd:0,liveBrl:0,prevBrl:0,closeRefBrl:null,
@@ -692,97 +756,6 @@ function refreshData(){
     .catch(function(){})
     .then(function(){startCountdown();});
 }
-
-/* VIEWPORT HEIGHT FIX — corrige 100vh no mobile Chrome */
-function setVh() {
-  var vh = window.innerHeight * 0.01;
-  document.documentElement.style.setProperty('--vh', vh + 'px');
-}
-setVh();
-window.addEventListener('resize', setVh);
-window.addEventListener('orientationchange', function() {
-  setTimeout(setVh, 200);
-});
-
-/* PWA — SERVICE WORKER */
-if('serviceWorker' in navigator){
-  window.addEventListener('load', function(){
-    navigator.serviceWorker.register('./sw.js').catch(function(){});
-  });
-}
-
-/* PWA — INSTALAÇÃO */
-var _installPrompt = null;
-window.addEventListener('beforeinstallprompt', function(e) {
-  e.preventDefault();
-  _installPrompt = e;
-  var btn = document.getElementById('instBtn');
-  if(btn) btn.classList.add('visible');
-});
-window.addEventListener('appinstalled', function() {
-  _installPrompt = null;
-  var btn = document.getElementById('instBtn');
-  if(btn) btn.classList.remove('visible');
-});
-function installPWA() {
-  if(!_installPrompt) return;
-  _installPrompt.prompt();
-  _installPrompt.userChoice.then(function() { _installPrompt = null; });
-}
-
-/* WAKE LOCK — tela sempre ligada */
-var _wakeLock = null;
-var _noSleepVideo = null;
-
-function _createNoSleepVideo() {
-  // Fallback: vídeo invisível em loop força a tela a ficar ligada
-  var v = document.createElement('video');
-  v.setAttribute('playsinline', '');
-  v.setAttribute('muted', '');
-  v.loop = true;
-  v.style.cssText = 'position:fixed;top:-9999px;left:-9999px;width:1px;height:1px;opacity:0;pointer-events:none;';
-  // MP4 mínimo em base64 (1 frame preto, 1 segundo)
-  v.src = 'data:video/mp4;base64,AAAAIGZ0eXBpc29tAAACAGlzb21pc28yYXZjMW1wNDEAAAAIZnJlZQAAA'+'rBtZGF0AAAAMmZyZWUAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=';
-  document.body.appendChild(v);
-  return v;
-}
-
-function requestWakeLock() {
-  if ('wakeLock' in navigator) {
-    navigator.wakeLock.request('screen')
-      .then(function(wl) {
-        _wakeLock = wl;
-        // Se o vídeo estava rodando como fallback, para
-        if (_noSleepVideo) { _noSleepVideo.pause(); }
-      })
-      .catch(function() {
-        // Wake Lock falhou — ativa fallback de vídeo
-        _activateVideoFallback();
-      });
-  } else {
-    _activateVideoFallback();
-  }
-}
-
-function _activateVideoFallback() {
-  if (!_noSleepVideo) _noSleepVideo = _createNoSleepVideo();
-  _noSleepVideo.play().catch(function() {});
-}
-
-// Ativa ao primeiro toque/clique do usuário (necessário para autoplay)
-var _wakeLockActivated = false;
-function _onFirstGesture() {
-  if (_wakeLockActivated) return;
-  _wakeLockActivated = true;
-  requestWakeLock();
-}
-document.addEventListener('touchstart', _onFirstGesture, {once: false, passive: true});
-document.addEventListener('click', _onFirstGesture, {once: false, passive: true});
-
-// Reativa quando o app volta ao foco
-document.addEventListener('visibilitychange', function() {
-  if (document.visibilityState === 'visible') requestWakeLock();
-});
 
 /* FULLSCREEN */
 function toggleFS(){
